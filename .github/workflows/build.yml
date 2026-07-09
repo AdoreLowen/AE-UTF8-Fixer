@@ -1,10 +1,15 @@
-name: Build AE Plugin
+name: Build and Release AE Plugin
 
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*' # 推送形如 v1.0.0, v1.1 等标签时触发
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: write
 
 jobs:
   build-windows:
@@ -27,8 +32,18 @@ jobs:
       run: |
         cmake --build build --config Release
 
+    # 保留常规 Artifact 上传
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: UTF8Fixer-Plugin
         path: build/Release/!00_UTF8_Fixer.aex
+
+    # 仅当推送 Tag 时，才会执行以下发布步骤
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: build/Release/!00_UTF8_Fixer.aex
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
