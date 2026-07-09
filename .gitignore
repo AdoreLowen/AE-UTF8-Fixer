@@ -1,0 +1,11 @@
+# 编译产物
+/build/
+/out/
+/.vs/
+/x64/
+/Debug/
+/Release/
+*.user
+*.filters
+*.sln
+*.vcxproj
