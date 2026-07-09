@@ -1,7 +1,7 @@
 # AE UTF-8 Fixer
 
-[](https://github.com/AdoreLowen/AE-UTF8-Fixer/actions)
-[](https://opensource.org/licenses/MIT)
+[![Build and Release AE Plugin](https://github.com/AdoreLowen/AE-UTF8-Fixer/actions/workflows/build.yml/badge.svg)](https://github.com/AdoreLowen/AE-UTF8-Fixer/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **AE UTF-8 Fixer** 是一个用于解决 Windows 端 Adobe After Effects 26.2 及以上版本中部分第三方插件在中文系统环境下出现参数名、下拉菜单等乱码或不显示的辅助插件。
 
