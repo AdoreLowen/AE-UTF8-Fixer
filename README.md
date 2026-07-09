@@ -10,7 +10,7 @@
 ## 一、使用方法
 
 1. 前往 [Releases](https://github.com/AdoreLowen/AE-UTF-8-Fixer/releases) 页面下载编译好的 `!00_UTF8_Fixer.aex`。
-2. 将该文件放入 Adobe After Effects 的插件目录中，通常路径为：
+2. 将该文件放入 Adobe After Effects 的插件目录中（不要重命名文件），通常路径为：
   `C:\Program Files\Adobe\Adobe After Effects 2026\Support Files\Plug-ins`
 3. 重新启动 After Effects 即可生效。
 
