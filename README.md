@@ -9,7 +9,7 @@
 
 ## 一、使用方法
 
-1. 前往 [Releases](https://github.com/AdoreLowen/AE-UTF-8-Fixer/releases) 页面下载编译好的 `!00_UTF8_Fixer.aex`。
+1. 前往 [Releases](https://github.com/AdoreLowen/AE-UTF8-Fixer/releases) 页面下载编译好的 `!00_UTF8_Fixer.aex`。
 2. 将该文件放入 Adobe After Effects 的插件目录中（不要重命名文件），通常路径为：
   `C:\Program Files\Adobe\Adobe After Effects 2026\Support Files\Plug-ins`
 3. 重新启动 After Effects 即可生效。
@@ -33,7 +33,7 @@
 1. 克隆本仓库：
   
   ```bash
-  git clone --recursive https://github.com/AdoreLowen/AE-UTF-8-Fixer.git
+  git clone --recursive https://github.com/AdoreLowen/AE-UTF8-Fixer.git
   ```
   
 2. 确保在本地存放有 `AE_SDK`，并配置好 `CMakeLists.txt` 中的 SDK 路径。
