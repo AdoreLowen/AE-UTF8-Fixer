@@ -52,10 +52,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 if(WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS MSWindows WIN32)
 
-    # MSVC 优化设置
     if(MSVC)
         target_compile_options(${PROJECT_NAME} PRIVATE
-            /O1                         # 优化体积
+            /EHa                        # 启用 SEH
+            /O2                         # 优化速度
             /GF                         # 启用只读字符串池化
             /Gy                         # 启用函数级链接
             /Oi                         # 启用内部函数
