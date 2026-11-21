@@ -293,8 +293,11 @@ static ModulePiPLSummary InspectModulePiPLs(HMODULE hMod) noexcept {
 
 static bool ShouldBypassForCurrentPlugin() noexcept {
     const int id = tl_CurrentPluginID;
-    return id >= 0 && id < WRAPPER_POOL_SIZE
-        && g_PluginOptInUTF8[id].load(std::memory_order_acquire);
+    if (id >= 0 && id < WRAPPER_POOL_SIZE) {
+        return g_PluginOptInUTF8[id].load(std::memory_order_acquire);
+    }
+    // 入口点未被 hook(插件身份未知)：UTF8ToLegacy 模式下跳过，避免误伤正确输出 UTF-8 的插件(如 AE 内置效果)
+    return g_FixerMode.load(std::memory_order_acquire) == FixerMode::UTF8ToLegacy;
 }
 
 // ==========================================
