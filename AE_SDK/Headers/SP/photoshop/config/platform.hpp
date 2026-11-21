@@ -18,90 +18,62 @@
 #ifndef PHOTOSHOP_PLATFORM_HPP
 #define PHOTOSHOP_PLATFORM_HPP
 
-/**************************************************************************************************/
-
-#ifdef RC_INVOKED // Windows Resource Compiler
-
-  // #error Windows resource compiler - do not include this file!
-
-#else
+// Core platform detection macros from the standalone platform_config library.
+// NOTE: Do not use relative includes here. Consumers should depend on
+// //libs/platform_config:platform_config to get the include path.
+#include <platform_config/platform.hpp>
 
 /**************************************************************************************************/
-
-#include <artemis/config/platform.hpp>
-
+// Legacy/deprecated macros kept here for backward compatibility.
+// New code should use PHOTOSHOP_PLATFORM(), PHOTOSHOP_ARCH(), etc. from platform_config.
 /**************************************************************************************************/
 
-// alias to the private artemis macros via concatenation because calling PHOTOSHOP_PLATFORM(X) errors
-// when PHOTOSHOP_PLATFORM(X) = (ARTEMIS_PLATFORM(X)) when the value of X is itself defined as a
-// macro. This is especially problematic for WIN32.
+#ifndef RC_INVOKED // Windows Resource Compiler
 
-#define PHOTOSHOP_PLATFORM(X) (ARTEMIS_PRIVATE_PLATFORM_##X())
-#define PHOTOSHOP_ARCH(X) (ARTEMIS_PRIVATE_ARCH_##X())
-#define PHOTOSHOP_BITS(X) (ARTEMIS_PRIVATE_BITS_##X())
-#define PHOTOSHOP_CPU(A,B) (ARTEMIS_PRIVATE_ARCH_##A() && ARTEMIS_PRIVATE_BITS_##B())
-#define PHOTOSHOP_PLATFORM_ARCH(X, A) (ARTEMIS_PRIVATE_PLATFORM_##X() && ARTEMIS_PRIVATE_ARCH_##A())
-#define PHOTOSHOP_PLATFORM_ARCH_BITS(X, A, B) (ARTEMIS_PRIVATE_PLATFORM_##X() && ARTEMIS_PRIVATE_ARCH_##A() && ARTEMIS_PRIVATE_BITS_##B())
+// Poisoned 2026 Mar 01. Use PHOTOSHOP_PLATFORM() from platform_config.
+#define PS_PLATFORM_ANDROID POISONED_MACRO_PS_PLATFORM_ANDROID()
+#define PS_PLATFORM_APPLE POISONED_MACRO_PS_PLATFORM_APPLE()
+#define PS_PLATFORM_IOS POISONED_MACRO_PS_PLATFORM_IOS()
+#define PS_PLATFORM_LINUX POISONED_MACRO_PS_PLATFORM_LINUX()
+#define PS_PLATFORM_MACOS POISONED_MACRO_PS_PLATFORM_MACOS()
+#define PS_PLATFORM_MS POISONED_MACRO_PS_PLATFORM_MS() // -> PHOTOSHOP_PLATFORM(MICROSOFT)
+#define PS_PLATFORM_POSIX POISONED_MACRO_PS_PLATFORM_POSIX()
+#define PS_PLATFORM_WEB POISONED_MACRO_PS_PLATFORM_WEB()
+// Poisoned 2026 Apr 15. Use PHOTOSHOP_PLATFORM(WIN32) from platform_config.
+#define PS_PLATFORM_WIN32 POISONED_MACRO_PS_PLATFORM_WIN32()
 
-// Really, these need to die a horrible death. However, they are still required
-// for rez_defines.h (See the comment in rez_platform.h for more details.)
-#define PS_PLATFORM_ANDROID PHOTOSHOP_PLATFORM(ANDROID)
-#define PS_PLATFORM_WEB PHOTOSHOP_PLATFORM(WEB)
-#define PS_PLATFORM_APPLE PHOTOSHOP_PLATFORM(APPLE)
-#define PS_PLATFORM_IOS PHOTOSHOP_PLATFORM(IOS)
-#define PS_PLATFORM_LINUX PHOTOSHOP_PLATFORM(LINUX)
-#define PS_PLATFORM_MACOS PHOTOSHOP_PLATFORM(MACOS)
-#define PS_PLATFORM_MS PHOTOSHOP_PLATFORM(MICROSOFT)
-#define PS_PLATFORM_POSIX PHOTOSHOP_PLATFORM(POSIX)
-#define PS_PLATFORM_UWP PHOTOSHOP_PLATFORM(UWP)
-#define PS_PLATFORM_WIN32 PHOTOSHOP_PLATFORM(WIN32)
-
-// Is there a reason why the above are replicated here?
-#ifndef PS_OS_WIN // Some Windows projects define this in their props file
-  #define PS_OS_WIN PHOTOSHOP_PLATFORM(MICROSOFT)
-#endif
-#ifndef PS_OS_IOS // Some Windows projects define this in their props file
-  #define PS_OS_IOS PHOTOSHOP_PLATFORM(IOS)
-#endif
-#ifndef PS_OS_MAC // Some Windows projects define this in their props file
-  #define PS_OS_MAC PHOTOSHOP_PLATFORM(MACOS)
-#endif
-#ifndef PS_OS_ANDROID // Some Windows projects define this in their props file
-  #define PS_OS_ANDROID PHOTOSHOP_PLATFORM(ANDROID)
-#endif
-
-#define PS_OS_WEB POISONED_MACRO_PS_OS_WEB()
+// Poisoned PS_OS_* macros (2026 Mar 01, PS-188308). Use PHOTOSHOP_PLATFORM() instead.
+// These expand to undefined function calls so the compiler will error if any old
+// PS_OS_* macro is used. The error message includes the poisoned name, making it
+// clear which macro to replace. See the inline comment for the correct replacement.
+#define PS_OS_WIN POISONED_MACRO_PS_OS_WIN()         // Use PHOTOSHOP_PLATFORM(MICROSOFT).
+#define PS_OS_IOS POISONED_MACRO_PS_OS_IOS()         // Use PHOTOSHOP_PLATFORM(IOS).
+#define PS_OS_MAC POISONED_MACRO_PS_OS_MAC()         // Use PHOTOSHOP_PLATFORM(MACOS).
+#define PS_OS_ANDROID POISONED_MACRO_PS_OS_ANDROID() // Use PHOTOSHOP_PLATFORM(ANDROID).
+#define PS_OS_LINUX POISONED_MACRO_PS_OS_LINUX()     // Use PHOTOSHOP_PLATFORM(LINUX).
+#define PS_OS_WEB POISONED_MACRO_PS_OS_WEB()         // Use PHOTOSHOP_PLATFORM(WEB).
 
 /**************************************************************************************************/
 
-// Simulated WASM support, which is a variation for PHOTOSHOP_PLATFORM(WEB) to support opt-out of
-// features that do not work in a simulated WASM environment.
-// Previously, the code was doing !defined(SIMULATED_WASM) in the feature #define's.  But that's undefined behavior.
-// warning: macro expansion producing 'defined' has undefined behavior [-Wexpansion-to-defined]
+#define qPSIsWin POISONED_MACRO_qPSIsWin() // Poisoned in PR #74383. Use PHOTOSHOP_PLATFORM(MICROSOFT).
+#define qPSIsMac POISONED_MACRO_qPSIsMac() // Poisoned in PR #74383. Use PHOTOSHOP_PLATFORM(APPLE).
 
-#if defined(SIMULATED_WASM)
-    #define PHOTOSHOP_PRIVATE_PLATFORM_SIMULATED_WASM() 1
-#else
-    #define PHOTOSHOP_PRIVATE_PLATFORM_SIMULATED_WASM() 0
+// Poisoned 2026 Mar 01. Use PHOTOSHOP_PLATFORM(MICROSOFT) instead.
+#define MSWindows POISONED_MACRO_MSWindows()
+
+// Deprecated 2026 Mar 01. Use PHOTOSHOP_PLATFORM(APPLE) instead.
+// NOTE: We cannot use `#define` or `#pragma GCC poison` for Macintosh because
+// Boost's predef/os/macos.h checks `defined(Macintosh)` — a #define would cause
+// Boost to misdetect macOS on all platforms, and poison would error in Boost headers.
+#ifdef Macintosh
+#undef Macintosh
 #endif
 
-/**************************************************************************************************/
-
-// Deprecated
-
-#define qPSIsWin (PHOTOSHOP_PLATFORM(MICROSOFT))
-#define qPSIsMac (PHOTOSHOP_PLATFORM(APPLE))
-
-// REVISIT (sparent) : This also come from Switches.h... sometimes. Untangle
-
-#ifndef MSWindows
-  #define MSWindows (PHOTOSHOP_PLATFORM(MICROSOFT))
-#endif
-
-// Macintosh is only defined for apple platforms
-#if PHOTOSHOP_PLATFORM(APPLE) && !defined(Macintosh)
-  #define Macintosh 1
-#endif
+// Exposure LUT cache configuration
+// Default is enabled on Android, disabled elsewhere
+#ifndef PS_EXPOSURE_LUT_CACHE
+#define PS_EXPOSURE_LUT_CACHE PHOTOSHOP_PLATFORM(ANDROID)
+#endif // PS_EXPOSURE_LUT_CACHE
 
 /**************************************************************************************************/
 #endif // RC_INVOKED

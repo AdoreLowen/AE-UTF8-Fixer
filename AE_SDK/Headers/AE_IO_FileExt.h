@@ -24,9 +24,10 @@
 
 #include <A.h>
 
-typedef struct {
-	A_char	pad;				// constant: always '.'
-	A_char	extension[3];
+typedef struct
+{
+    A_char pad; // constant: always '.'
+    A_char extension[3];
 } AEIO_FileExt;
 
-#endif	//	_AEIO_FileExt_Public_H
+#endif //  _AEIO_FileExt_Public_H

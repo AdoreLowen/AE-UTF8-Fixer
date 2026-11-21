@@ -19,30 +19,22 @@
 /*                                                                 */
 /*******************************************************************/
 
-
-
 /* String_Utils.h  */
 
-
-#pragma once 
+#pragma once
 
 #ifndef STRING_UTILS_H
-#define STRING_UTILS_H
+    #define STRING_UTILS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-A_char	*GetStringPtr(int strNum);
-#ifdef __cplusplus
+    #ifdef __cplusplus
+extern "C"
+{
+    #endif
+    A_char* GetStringPtr(int strNum);
+    #ifdef __cplusplus
 }
-#endif
+    #endif
 
-#define	STR(_foo)	GetStringPtr(_foo)
-
-
-
-
-
-
+    #define STR(_foo) GetStringPtr(_foo)
 
 #endif /* STRING_UTILS_H */

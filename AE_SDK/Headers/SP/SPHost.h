@@ -129,25 +129,6 @@ extern "C"
  */
     SPErr SPShutdownPlugins(void);
 
-#ifdef MAC_ENV
-    /*
- *  SPSetPPCLoadHeap() sets the destination heap of plug-in accesses on PowerPPC
- *  Macintoshes.  Plug-ins can load into the system heap or the application heap.
- */
-    typedef enum
-    {
-        kAppHeap = 0,
-        kSysHeap
-    } SPTargetHeap;
-
-    SPErr SPSetPPCLoadHeap(SPTargetHeap target);
-
-    /*
- *  SPSetHostBundleRef() lets sweet pea know the bundle ref of the host.
- */
-    SPErr SPSetHostBundleRef(CFBundleRef hostBundle);
-#endif
-
     /*
  *  SPVersion() returns the version number of the Sweet Pea host interface (this
  *  file) for which Sweet Pea was built. You can compare this to the constant

@@ -32,7 +32,6 @@ enum
 };
 typedef A_long AEIO_DisplayPrimaries;
 
-
 typedef struct AEIO_MasteringDisplayMetadata
 {
     A_FpLong md_chromaticity_redX;
@@ -53,4 +52,4 @@ typedef struct AEIO_ContentLighLevelMetadata
     A_FpLong max_frame_avg_light_level;
 } AEIO_ContentLighLevelMetadata;
 
-#endif	//	_AEIO_ColorMetadata_Public_H
+#endif //  _AEIO_ColorMetadata_Public_H

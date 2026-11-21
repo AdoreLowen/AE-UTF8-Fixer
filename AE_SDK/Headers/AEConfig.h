@@ -12,7 +12,7 @@ the form
 #elif defined(AE_NOT_XXXX) (i.e. AE_OS_WIN)
 
 #else
-	#error "unknown"
+    #error "unknown"
 #endif
 
 when creating conditionally compiled blocks.
@@ -51,44 +51,43 @@ For the record, our file format is stored big endian.
 */
 //Define our OS defines
 #if defined(_WIN32)
-	#define AE_OS_WIN
+    #define AE_OS_WIN
 #elif defined(__GNUC__) && defined(__MACH__)
-	#include "TargetConditionals.h"	// defines the nesting of TARGET_OS_*
-	#if TARGET_OS_MAC
-		#if TARGET_OS_IPHONE
-			// Older SDKs ( before TV, WATCH ) do not have TARGET_OS_IOS defined.
-			#if TARGET_OS_IOS || !defined(TARGET_OS_IOS)
-				#define AE_OS_IOS
-			#endif
-		#else
-			#define AE_OS_MAC
-		#endif // TARGET_OS_IPHONE
+    #include "TargetConditionals.h" // defines the nesting of TARGET_OS_*
+    #if TARGET_OS_MAC
+        #if TARGET_OS_IPHONE
+            // Older SDKs ( before TV, WATCH ) do not have TARGET_OS_IOS defined.
+            #if TARGET_OS_IOS || !defined(TARGET_OS_IOS)
+                #define AE_OS_IOS
+            #endif
+        #else
+            #define AE_OS_MAC
+        #endif // TARGET_OS_IPHONE
 
-	#if TARGET_OS_SIMULATOR
-		#define AE_OS_APPLE_SIM
-	#endif
-	#endif // TARGET_OS_MAC
+        #if TARGET_OS_SIMULATOR
+            #define AE_OS_APPLE_SIM
+        #endif
+    #endif // TARGET_OS_MAC
 #elif Rez
-	#define AE_OS_MAC
+    #define AE_OS_MAC
 #elif defined(__ANDROID__)
-	#define AE_OS_ANDROID
+    #define AE_OS_ANDROID
 #else
-	#error "unrecognized AE platform"
+    #error "unrecognized AE platform"
 #endif
 
 //Define our Processor defines
 #if defined(__i386__) || defined(_M_IX86)
-	#define AE_PROC_INTEL
+    #define AE_PROC_INTEL
 #elif defined(_M_X64) || defined(__amd64__) || defined(__x86_64__)
-	#define AE_PROC_INTELx64
+    #define AE_PROC_INTELx64
 #elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64)
     #define AE_PROC_ARM64
 #else
-	#error  "unrecognized AE processor"
+    #error "unrecognized AE processor"
 #endif
 
 //Define our Byte order
 #define AE_LITTLE_ENDIAN
-
 
 #endif

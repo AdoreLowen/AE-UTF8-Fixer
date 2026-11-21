@@ -29,145 +29,154 @@
 
 #ifdef A_INTERNAL
 
-#include <A_Private.h>
+    #include <A_Private.h> // IWYU pragma: export
 
 #else
-#include "stdint.h"
+    #include "stdint.h"
 
-typedef int32_t  A_long;
+typedef int32_t A_long;
 typedef uint32_t A_u_long;
-typedef char     A_char;
-typedef double   A_FpLong;
-typedef float    A_FpShort;
-typedef A_long   A_Err;
-typedef void*    A_Handle;
-typedef A_long   A_Fixed;
+typedef char A_char;
+typedef double A_FpLong;
+typedef float A_FpShort;
+typedef A_long A_Err;
+typedef void* A_Handle;
+typedef A_long A_Fixed;
 typedef A_u_long A_UFixed;
 
-#if defined(__MWERKS__) || defined(__GNUC__) // metrowerks codewarrior and XCode/GCC
-typedef int16_t  A_short;
+    #if defined(__GNUC__) // XCode/GCC
+typedef int16_t A_short;
 typedef uint16_t A_u_short;
-typedef uint8_t  A_u_char;
-typedef uint8_t  A_Boolean;
+typedef uint8_t A_u_char;
+typedef uint8_t A_Boolean;
 typedef intptr_t A_intptr_t;
-#else                                        // windows
-typedef short          A_short;
+    #else                 // windows
+typedef short A_short;
 typedef unsigned short A_u_short;
-typedef unsigned char  A_u_char;
-typedef unsigned char  A_Boolean;
-#ifdef _WIN64
+typedef unsigned char A_u_char;
+typedef unsigned char A_Boolean;
+        #ifdef _WIN64
 typedef __int64 A_intptr_t;
-#else
+        #else
 typedef int32_t A_intptr_t;
-#endif
-#endif
+        #endif
+    #endif
 
-#ifdef _MSC_VER // visual c++
+    #ifdef _MSC_VER // visual c++
 typedef unsigned __int64 A_u_longlong;
-#endif
+    #endif
 
-#if defined(__MWERKS__) || defined(__GNUC__) // metrowerks codewarrior and XCode/GCC
+    #if defined(__GNUC__) // XCode/GCC
 typedef uint64_t A_u_longlong;
-#endif
+    #endif
 
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable : 4103)
-#elif defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpragma-pack"
-#endif
-#include <adobesdk/config/PreConfig.h>
-#ifdef _WIN32
-#pragma warning(pop)
-#elif defined(__clang__)
-#pragma clang diagnostic pop
-#endif
+    #if defined(_MSC_VER) && !defined(__clang__)
+        #pragma warning(push)
+        #pragma warning(disable : 4103)
+    #elif defined(__clang__)
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wpragma-pack"
+    #endif
+    #include <adobesdk/config/PreConfig.h>
+    #if defined(_MSC_VER) && !defined(__clang__)
+        #pragma warning(pop)
+    #elif defined(__clang__)
+        #pragma clang diagnostic pop
+    #endif
 
-
-typedef struct {
-    A_long   value;
+typedef struct
+{
+    A_long value;
     A_u_long scale;
 } A_Time;
 
-typedef struct {
-    A_long   num; /* numerator */
+typedef struct
+{
+    A_long num;   /* numerator */
     A_u_long den; /* denominator */
 } A_Ratio;
 
-typedef struct {
+typedef struct
+{
     A_FpLong x, y;
 } A_FloatPoint;
 
-typedef struct {
+typedef struct
+{
     A_FpLong x, y, z;
 } A_FloatPoint3;
 
-typedef struct {
+typedef struct
+{
     A_FpLong left, top, right, bottom;
 } A_FloatRect;
 
-typedef struct {
+typedef struct
+{
     A_FpLong mat[3][3];
 } A_Matrix3;
 
-typedef struct {
+typedef struct
+{
     A_FpLong mat[4][4];
 } A_Matrix4;
 
-typedef struct {
+typedef struct
+{
     A_short top, left, bottom, right;
 } A_LegacyRect;
 
-typedef struct {
+typedef struct
+{
     A_long left, top, right, bottom;
 } A_LRect;
 
 typedef A_LRect A_Rect;
 
-typedef struct {
+typedef struct
+{
     A_long x, y;
 } A_LPoint;
 
-typedef struct {
+typedef struct
+{
     A_FpLong radius, angle;
 } A_FloatPolar;
 
 typedef A_u_longlong A_HandleSize;
 
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable : 4103)
-#elif defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpragma-pack"
+    #if defined(_MSC_VER) && !defined(__clang__)
+        #pragma warning(push)
+        #pragma warning(disable : 4103)
+    #elif defined(__clang__)
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wpragma-pack"
+    #endif
+    #include <adobesdk/config/PostConfig.h>
+    #if defined(_MSC_VER) && !defined(__clang__)
+        #pragma warning(pop)
+    #elif defined(__clang__)
+        #pragma clang diagnostic pop
+    #endif
+
 #endif
-#include <adobesdk/config/PostConfig.h>
-#ifdef _WIN32
-#pragma warning(pop)
+
+#if defined(_MSC_VER) && !defined(__clang__)
+    #pragma warning(push)
+    #pragma warning(disable : 4103)
 #elif defined(__clang__)
-#pragma clang diagnostic pop
-#endif
-
-
-#endif
-
-
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable : 4103)
-#elif defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpragma-pack"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wpragma-pack"
 #endif
 #include <adobesdk/config/PreConfig.h>
-#ifdef _WIN32
-#pragma warning(pop)
+#if defined(_MSC_VER) && !defined(__clang__)
+    #pragma warning(pop)
 #elif defined(__clang__)
-#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
 #endif
 
-typedef struct {
+typedef struct
+{
     A_FpLong alpha;
     A_FpLong red;
     A_FpLong green;
@@ -175,33 +184,31 @@ typedef struct {
 
 } A_Color;
 
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable : 4103)
+#if defined(_MSC_VER) && !defined(__clang__)
+    #pragma warning(push)
+    #pragma warning(disable : 4103)
 #elif defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpragma-pack"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wpragma-pack"
 #endif
 #include <adobesdk/config/PostConfig.h>
-#ifdef _WIN32
-#pragma warning(pop)
+#if defined(_MSC_VER) && !defined(__clang__)
+    #pragma warning(pop)
 #elif defined(__clang__)
-#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
 #endif
-
 
 #define A_THROW(ERR) throw((A_long)ERR)
 
-enum {
+enum
+{
     A_Err_NONE = 0,
     A_Err_GENERIC,
     A_Err_STRUCT,
     A_Err_PARAMETER,
     A_Err_ALLOC,
-    A_Err_WRONG_THREAD, // Some calls can only be used on UI (Main) or Render threads. Also, calls back to AE can only
-                        // be made from the same thread AE called you on
-    A_Err_CONST_PROJECT_MODIFICATION, // An attempt was made to write to a read only copy of an AE project. Project
-                                      // changes must originate in the UI/Main thread.
+    A_Err_WRONG_THREAD, // Some calls can only be used on UI (Main) or Render threads. Also, calls back to AE can only be made from the same thread AE called you on
+    A_Err_CONST_PROJECT_MODIFICATION, // An attempt was made to write to a read only copy of an AE project. Project changes must originate in the UI/Main thread.
     A_Err_RESERVED_7,
     A_Err_RESERVED_8,
     A_Err_RESERVED_9,
@@ -224,7 +231,8 @@ enum {
     A_Err_LAST
 };
 
-typedef struct {
+typedef struct
+{
     A_short majorS;
     A_short minorS;
 } A_Version;
@@ -233,7 +241,7 @@ typedef struct _Up_OpaqueMem** AEGP_MemHandle;
 
 typedef A_u_short A_UTF16Char;
 
-#if defined(__MWERKS__) || defined(__GNUC__) // metrowerks codewarrior and XCode/GCC
+#if defined(__GNUC__) // XCode/GCC
 typedef A_char A_LegacyEnumType;
 #else // windows
 typedef A_long A_LegacyEnumType;

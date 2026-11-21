@@ -16,37 +16,39 @@
 ********************************************************************/
 
 #ifndef _H_AE_HashSuite
-	#define _H_AE_HashSuite
+#define _H_AE_HashSuite
 
 #ifdef AEGP_INTERNAL
-	#include <AE_GeneralPlug_Private.h>
+    #include <AE_GeneralPlug_Private.h>
 #endif
 
 #include <AE_ComputeCacheSuite.h>
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C"
+{
 #endif
 
-#define kAEGPHashSuite				"AEGP Hash Suite"
-#define kAEGPHashSuiteVersion1		1	/* frozen in AE 17.5.1 */
+#define kAEGPHashSuite "AEGP Hash Suite"
+#define kAEGPHashSuiteVersion1 1 /* frozen in AE 17.5.1 */
 
-typedef struct {
+    typedef struct
+    {
 
-	SPAPI A_Err (*AEGP_CreateHashFromPtr)(
-							const A_u_longlong		buf_sizeLu,		/* >> size of the buffer */
-							const void				*bufPV,			/* >> the buffer pointer */
-							AEGP_GUID				*hashP);		/* << result */
+        SPAPI A_Err (*AEGP_CreateHashFromPtr)(
+            const A_u_longlong buf_sizeLu, /* >> size of the buffer */
+            const void* bufPV,             /* >> the buffer pointer */
+            AEGP_GUID* hashP);             /* << result */
 
-	SPAPI A_Err	(*AEGP_HashMixInPtr)(
-							const A_u_longlong		buf_sizeLu,		/* >> size of the buffer */
-							const void				*bufPV,			/* >> the buffer pointer */
-							AEGP_GUID				*hashP);		/* <> guid to be mixed in */
+        SPAPI A_Err (*AEGP_HashMixInPtr)(
+            const A_u_longlong buf_sizeLu, /* >> size of the buffer */
+            const void* bufPV,             /* >> the buffer pointer */
+            AEGP_GUID* hashP);             /* <> guid to be mixed in */
 
-} AEGP_HashSuite1;
+    } AEGP_HashSuite1;
 
 #ifdef __cplusplus
-	}		// end extern "C"
+} // end extern "C"
 #endif
 
 #endif

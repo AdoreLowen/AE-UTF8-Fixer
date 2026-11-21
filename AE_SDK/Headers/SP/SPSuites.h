@@ -291,25 +291,4 @@ extern "C"
 }
 #endif
 
-/***********************************************************************************************************
-    *** HACK to undefine MSWindows ***
-
-    MSWindow is being defined on Mac Platforms from the file:
-    .../dva/build/mb/macos/remote/dva/artifacts_manifest/photoshop-pie.pie/pie-macos-1.51.0/bin/AdobePSL/photoshop_sdk/config/photoshop/config/platform.hpp
-    It appears that originally this code was commented out. But in new code (1.51) it is uncommented:
-    ```
-    // REVISIT (sparent) : This also come from Switches.h... sometimes. Untangle
-    //#ifndef MSWindows
-    //  #define MSWindows (PHOTOSHOP_PLATFORM(MICROSOFT))
-    //#endif
-    ```
-    We cannot modify platform.hpp because it's coming from the Photoshop SDK. Instead will undef MSWindows where
-    we include platform.hpp
-*************************************************************************************************************/
-#if PS_PLATFORM_APPLE
-    #ifdef MSWindows
-        #undef MSWindows
-    #endif
-#endif
-
 #endif

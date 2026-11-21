@@ -1,13 +1,25 @@
+/*******************************************************************/
+/*                                                                 */
+/* Copyright 2025 Adobe                                            */
+/* All Rights Reserved.                                            */
+/*                                                                 */
+/* NOTICE:  Adobe permits you to use, modify, and distribute this  */
+/* file in accordance with the terms of the Adobe license          */
+/* agreement accompanying it.                                      */
+/*                                                                 */
+/*******************************************************************/
+
 #include "A.h"
 #include <SPTypes.h>
 
 #ifdef AE_OS_WIN
-	#include <windows.h>
+    #include <windows.h>
 #endif
 
-#define kDuckSuite1				"AEGP Duck Suite"
-#define kDuckSuiteVersion1		1
+#define kDuckSuite1 "AEGP Duck Suite"
+#define kDuckSuiteVersion1 1
 
-typedef struct DuckSuite1 {
-	SPAPI A_Err	(*Quack)(A_u_short	timesSu);
+typedef struct DuckSuite1
+{
+    SPAPI A_Err (*Quack)(A_u_short timesSu);
 } DuckSuite1;

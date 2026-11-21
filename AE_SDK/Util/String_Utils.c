@@ -1,6 +1,6 @@
 #include "String_Utils.h"
 
-A_char	*GetStringPtr(int strNum)
+A_char* GetStringPtr(int strNum)
 {
-	return g_strs[strNum].str;
+    return g_strs[strNum].str;
 }

@@ -272,8 +272,7 @@ extern "C"
     /** Internal */
     typedef SPAPI SPBoolean (*SPOverrideStartupProc)(SPPluginRef currentPlugin);
 
-#if defined(WIN_ENV) || defined(ANDROID_ENV)
-    /** Internal */
+#if defined(WIN_ENV) /** Internal */
     typedef SPAPI SPErr (*SPResolveLinkProc)(const char* shortcutFile, char* resolvedPath);
 #endif
 
@@ -317,7 +316,7 @@ extern "C"
         SPAddPluginsProc overrideAddPlugins;
         SPOverrideStartupProc overridePluginStartup;
 
-#if defined(WIN_ENV) || defined(ANDROID_ENV)
+#if defined(WIN_ENV)
         SPResolveLinkProc resolveLink;
 #endif
 

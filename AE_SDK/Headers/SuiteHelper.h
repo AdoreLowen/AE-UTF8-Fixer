@@ -9,89 +9,93 @@
 template <typename SuiteType>
 struct SuiteTraits
 {
-	static const A_char*	i_name;
-	static const int32_t	i_version;
+    static const A_char* i_name;
+    static const int32_t i_version;
 };
 
 template <typename SuiteType>
 class AssertAndThrowOnMissingSuite
 {
 public:
-	void operator()()
-	{
-		assert( false );
-		A_THROW(A_Err_MISSING_SUITE);
-	}
+    void operator()()
+    {
+        assert(false);
+        A_THROW(A_Err_MISSING_SUITE);
+    }
 };
-
 
 class MissingSuiteErrFunc_NoOp
 {
 public:
-	void operator()()
-	{
-		//swallow the error, not much we want to do or can do
-	}
+    void operator()()
+    {
+        //swallow the error, not much we want to do or can do
+    }
 };
 
-
-template<typename SuiteType, class MissingSuiteErrFunc = AssertAndThrowOnMissingSuite<SuiteType> >
+template <typename SuiteType, class MissingSuiteErrFunc = AssertAndThrowOnMissingSuite<SuiteType>>
 class SuiteHelper
 {
 public:
-	SuiteHelper(const SPBasicSuite* const basic_suiteP);
-	~SuiteHelper();
+    SuiteHelper(const SPBasicSuite* const basic_suiteP);
+    ~SuiteHelper();
 
-	const SuiteType* operator->() const;
-	SuiteType* get() const;
+    const SuiteType* operator->() const;
+    SuiteType* get() const;
 
 private:
-	mutable SuiteType*	i_SuiteP;
-	const SPBasicSuite* const i_basic_suiteP;
+    mutable SuiteType* i_SuiteP;
+    const SPBasicSuite* const i_basic_suiteP;
 };
 
-
-template<typename SuiteType, class MissingSuiteErrFunc >
-SuiteHelper<SuiteType, MissingSuiteErrFunc>::SuiteHelper(const SPBasicSuite* const basic_suiteP) : i_basic_suiteP(basic_suiteP), i_SuiteP( NULL )
+template <typename SuiteType, class MissingSuiteErrFunc>
+SuiteHelper<SuiteType, MissingSuiteErrFunc>::SuiteHelper(const SPBasicSuite* const basic_suiteP)
+    : i_basic_suiteP(basic_suiteP),
+      i_SuiteP(NULL)
 {
-	assert(basic_suiteP);
-	const void * acquired_suite = NULL;
+    assert(basic_suiteP);
+    const void* acquired_suite = NULL;
 
-	A_Err err = i_basic_suiteP->AcquireSuite(SuiteTraits<SuiteType>::i_name, SuiteTraits<SuiteType>::i_version, &acquired_suite);
-	if (err || !acquired_suite) {
-		MissingSuiteErrFunc error_func;
-		error_func();
-	} else {
-		i_SuiteP = reinterpret_cast<SuiteType*>(const_cast<void*>(acquired_suite));
-	}
+    A_Err err = i_basic_suiteP->AcquireSuite(
+        SuiteTraits<SuiteType>::i_name, SuiteTraits<SuiteType>::i_version, &acquired_suite);
+    if (err || !acquired_suite)
+    {
+        MissingSuiteErrFunc error_func;
+        error_func();
+    }
+    else
+    {
+        i_SuiteP = reinterpret_cast<SuiteType*>(const_cast<void*>(acquired_suite));
+    }
 }
 
-template<typename SuiteType, class MissingSuiteErrFunc>
+template <typename SuiteType, class MissingSuiteErrFunc>
 SuiteHelper<SuiteType, MissingSuiteErrFunc>::~SuiteHelper()
 {
-	if (i_SuiteP) {
-		
-		#ifdef DEBUG
-			A_Err err = 
-		#endif
-				
-		i_basic_suiteP->ReleaseSuite(SuiteTraits<SuiteType>::i_name, SuiteTraits<SuiteType>::i_version);
-		
-		#ifdef DEBUG
-			assert( !err );
-		#endif		
-	}
+    if (i_SuiteP)
+    {
+
+#ifdef DEBUG
+        A_Err err =
+#endif
+
+            i_basic_suiteP->ReleaseSuite(SuiteTraits<SuiteType>::i_name, SuiteTraits<SuiteType>::i_version);
+
+#ifdef DEBUG
+        assert(!err);
+#endif
+    }
 }
 
-template<typename SuiteType, class MissingSuiteErrFunc>
+template <typename SuiteType, class MissingSuiteErrFunc>
 const SuiteType* SuiteHelper<SuiteType, MissingSuiteErrFunc>::operator->() const
 {
-	return i_SuiteP;
-}	
+    return i_SuiteP;
+}
 
-template<typename SuiteType, class MissingSuiteErrFunc>
+template <typename SuiteType, class MissingSuiteErrFunc>
 SuiteType* SuiteHelper<SuiteType, MissingSuiteErrFunc>::get() const
 {
-	return i_SuiteP;
+    return i_SuiteP;
 }
 #endif

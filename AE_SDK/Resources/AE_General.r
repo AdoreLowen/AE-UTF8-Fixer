@@ -565,7 +565,36 @@ type 'PiPL'
 			  supportURLEnd:
 				align long;
 
-			};
+		case AE_Effect_Search_Keywords:
+			longint = '8BIM';
+			key longint = 'eKWD';
+			longint = 0;
+#if DeRez
+			fill long;
+#else
+			longint = (searchKeywordsEnd[$$ArrayIndex(properties)] -
+					   searchKeywordsStart[$$ArrayIndex(properties)]) / 8;
+#endif
+			searchKeywordsStart:
+				cstring;
+			searchKeywordsEnd:
+				align long;
+
+		case AE_Effect_Description:
+			longint = '8BIM';
+			key longint = 'eDSC';
+			longint = 0;
+#if DeRez
+			fill long;
+#else
+			longint = (effectDescriptionEnd[$$ArrayIndex(properties)] - effectDescriptionStart[$$ArrayIndex(properties)]) / 8;
+#endif
+		  effectDescriptionStart:
+			cstring;
+		  effectDescriptionEnd:
+			align long;
+
+		};
 		};
 	};
 

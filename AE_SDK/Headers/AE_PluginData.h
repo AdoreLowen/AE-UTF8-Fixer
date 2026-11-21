@@ -19,150 +19,163 @@
 /*                                                                 */
 /*******************************************************************/
 
-
-#ifndef	_H_AE_PLUGIN_DATA
-#define	_H_AE_PLUGIN_DATA
+#ifndef _H_AE_PLUGIN_DATA
+#define _H_AE_PLUGIN_DATA
 
 #ifdef A_INTERNAL
-	#include "PF_Private.h"
+    #include "PF_Private.h"
 #endif
 
 #include "A.h"
 
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(push)
     #pragma warning(disable : 4103)
 #elif defined(__clang__)
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wpragma-pack"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wpragma-pack"
 #endif
 #include <adobesdk/config/PreConfig.h>
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(pop)
 #elif defined(__clang__)
-	#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
 #endif
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C"
+{
 #endif
 
-typedef struct PF_PluginData * PF_PluginDataPtr;
+    typedef struct PF_PluginData* PF_PluginDataPtr;
 
+    ////////////////////////////////////////////////////////////////
+    //
+    // Version 2 of the plugin entry point
+    //   - adds 'inSupportURLPtr' to plugin data callback
+    //
+    ////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////
-//
-// Version 2 of the plugin entry point
-//   - adds 'inSupportURLPtr' to plugin data callback
-//
-////////////////////////////////////////////////////////////////
+    typedef A_Err (*PF_PluginDataCB2)(
+        // The same plugin data pointer that was sent in the entry point
+        PF_PluginDataPtr inPtr,
+        const A_u_char* inNamePtr,
+        const A_u_char* inMatchNamePtr,
+        const A_u_char* inCategoryPtr,
+        const A_u_char* inEntryPointNamePtr,
+        // Type of plugin ( VFlt,eFKT ,8BFM)
+        A_long inKind,
+        // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_VERSION
+        A_long inApiVersionMajor,
+        // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_SUBVERS
+        A_long inApiVersionMinor,
+        A_long inReservedInfo,
+        const A_u_char* inSupportURLPtr // newly added
+    );
 
-
-typedef A_Err (*PF_PluginDataCB2)(
-                                    // The same plugin data pointer that was sent in the entry point
-                                    PF_PluginDataPtr   inPtr,
-                                    const A_u_char*  inNamePtr,
-                                    const A_u_char*  inMatchNamePtr,
-                                    const A_u_char*  inCategoryPtr,
-                                    const A_u_char*  inEntryPointNamePtr,
-                                    // Type of plugin ( VFlt,eFKT ,8BFM)
-                                    A_long        inkind,
-                                    // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_VERSION
-                                    A_long		  inApiVersionMajor,
-                                    // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_SUBVERS
-                                    A_long		  inApiVersionMinor,
-                                    A_long        inReservedInfo,
-									const A_u_char*	 inSupportURLPtr			// newly added
-                                    ) ;
-
-
-/*
+    /*
  * This is the Entry point function signature that must be implemented by the plugin
  * Name of the function must be PluginDataEntryFunction2
 */
-typedef A_Err (*PluginDataEntryFunction2Ptr)(
-                                            // An opaque pointer, which must be sent as an argument in the callback
-                                            PF_PluginDataPtr inPtr,
-                                            // Callback function pointer
-                                            PF_PluginDataCB2 inPluginDataCallBackPtr,
-                                            // SPBasicSuite function pointer
-                                            struct SPBasicSuite* inSPBasicSuitePtr,
-                                            // Name of the host application which is invoking the plugin
-                                            const char* inHostName,
-                                            // Exact version of the  host application  e.x. 10.1.3
-                                            const char* inHostVersion
-                                            );
+    typedef A_Err (*PluginDataEntryFunction2Ptr)(
+        // An opaque pointer, which must be sent as an argument in the callback
+        PF_PluginDataPtr inPtr,
+        // Callback function pointer
+        PF_PluginDataCB2 inPluginDataCallBackPtr,
+        // SPBasicSuite function pointer
+        struct SPBasicSuite* inSPBasicSuitePtr,
+        // Name of the host application which is invoking the plugin
+        const char* inHostName,
+        // Exact version of the  host application  e.x. 10.1.3
+        const char* inHostVersion);
 
+    ////////////////////////////////////////////////////////////////
+    //
+    // Version 3 of the plugin entry point
+    //   - adds 'inSearchKeywordsPtr' and 'inEffectDescriptionPtr'
+    //
+    ////////////////////////////////////////////////////////////////
 
+    typedef A_Err (*PF_PluginDataCB3)(
+        PF_PluginDataPtr inPtr,
+        const A_u_char* inNamePtr,
+        const A_u_char* inMatchNamePtr,
+        const A_u_char* inCategoryPtr,
+        const A_u_char* inEntryPointNamePtr,
+        A_long inKind,
+        A_long inApiVersionMajor,
+        A_long inApiVersionMinor,
+        A_long inReservedInfo,
+        const A_u_char* inSupportURLPtr,
+        const A_u_char* inSearchKeywordsPtr,
+        const A_u_char* inEffectDescriptionPtr);
 
-////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////
-//////////////////// OLDER VERSIONS ///////////////////////////
-////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////
+    typedef A_Err (*PluginDataEntryFunction3Ptr)(
+        PF_PluginDataPtr inPtr,
+        PF_PluginDataCB3 inPluginDataCallBackPtr,
+        struct SPBasicSuite* inSPBasicSuitePtr,
+        const char* inHostName,
+        const char* inHostVersion);
 
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
+    //////////////////// OLDER VERSIONS ///////////////////////////
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////////////////////////
+    //
+    // Version 1 of the plugin entry point
+    //
+    ////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////
-//
-// Version 1 of the plugin entry point
-//
-////////////////////////////////////////////////////////////////
+    typedef A_Err (*PF_PluginDataCB)(
+        // The same plugin data pointer that was sent in the entry point
+        PF_PluginDataPtr inPtr,
+        const A_u_char* inNamePtr,
+        const A_u_char* inMatchNamePtr,
+        const A_u_char* inCategoryPtr,
+        const A_u_char* inEntryPointNamePtr,
+        // Type of plugin ( VFlt,eFKT ,8BFM)
+        A_long inKind,
+        // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_VERSION
+        A_long inApiVersionMajor,
+        // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_SUBVERS
+        A_long inApiVersionMinor,
+        A_long inReservedInfo);
 
-typedef A_Err (*PF_PluginDataCB)(
-                                    // The same plugin data pointer that was sent in the entry point
-                                    PF_PluginDataPtr   inPtr,
-                                    const A_u_char*  inNamePtr,
-                                    const A_u_char*  inMatchNamePtr,
-                                    const A_u_char*  inCategoryPtr,
-                                    const A_u_char*  inEntryPointNamePtr,
-                                    // Type of plugin ( VFlt,eFKT ,8BFM)
-                                    A_long        inkind,
-                                    // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_VERSION
-                                    A_long		  inApiVersionMajor,
-                                    // If the kind is eFKT, this argument must be PF_AE_PLUG_IN_SUBVERS
-                                    A_long		  inApiVersionMinor,
-                                    A_long        inReservedInfo
-                                    ) ;
-
-/*
+    /*
  * This is the Entry point function signature that must be implemented by the plugin
  * Name of the function must be PluginDataEntryFunction
 */
-typedef A_Err (*PluginDataEntryFunctionPtr)(
-                                            // An opaque pointer, which must be sent as an argument in the callback
-                                            PF_PluginDataPtr inPtr,
-                                            // Callback function pointer
-                                            PF_PluginDataCB inPluginDataCallBackPtr,
-                                            // SPBasicSuite function pointer
-                                            struct SPBasicSuite* inSPBasicSuitePtr,
-                                            // Name of the host application which is invoking the plugin
-                                            const char* inHostName,
-                                            // Exact version of the  host application  e.x. 10.1.3
-                                            const char* inHostVersion
-                                            );
-
-
+    typedef A_Err (*PluginDataEntryFunctionPtr)(
+        // An opaque pointer, which must be sent as an argument in the callback
+        PF_PluginDataPtr inPtr,
+        // Callback function pointer
+        PF_PluginDataCB inPluginDataCallBackPtr,
+        // SPBasicSuite function pointer
+        struct SPBasicSuite* inSPBasicSuitePtr,
+        // Name of the host application which is invoking the plugin
+        const char* inHostName,
+        // Exact version of the  host application  e.x. 10.1.3
+        const char* inHostVersion);
 
 #ifdef __cplusplus
-}		// end extern "C"
+} // end extern "C"
 #endif
 
-
-
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(push)
     #pragma warning(disable : 4103)
 #elif defined(__clang__)
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wpragma-pack"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wpragma-pack"
 #endif
 #include <adobesdk/config/PostConfig.h>
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(pop)
 #elif defined(__clang__)
-	#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
 #endif
-
 
 #endif /* _H_AE_PLUGIN_DATA */

@@ -25,7 +25,7 @@
 
 #include "stdint.h"
 
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(push)
     #pragma warning(disable : 4103)
 #elif defined(__clang__)
@@ -33,7 +33,7 @@
     #pragma clang diagnostic ignored "-Wpragma-pack"
 #endif
 #include <adobesdk/config/PreConfig.h>
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(pop)
 #elif defined(__clang__)
     #pragma clang diagnostic pop
@@ -57,7 +57,7 @@ typedef struct
     int64_t opaque[2];
 } ADOBESDK_String;
 
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(push)
     #pragma warning(disable : 4103)
 #elif defined(__clang__)
@@ -65,7 +65,7 @@ typedef struct
     #pragma clang diagnostic ignored "-Wpragma-pack"
 #endif
 #include <adobesdk/config/PostConfig.h>
-#ifdef _WIN32
+#if defined(_MSC_VER) && !defined(__clang__)
     #pragma warning(pop)
 #elif defined(__clang__)
     #pragma clang diagnostic pop

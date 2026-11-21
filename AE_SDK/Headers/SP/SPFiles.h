@@ -29,41 +29,10 @@
 #include "SPTypes.h"
 #include "SPProps.h"
 
-/***********************************************************************************************************
-    *** HACK to undefine MSWindows ***
-
-    MSWindow is being defined on Mac Platforms from the file:
-    .../dva/build/mb/macos/remote/dva/artifacts_manifest/photoshop-pie.pie/pie-macos-1.51.0/bin/AdobePSL/photoshop_sdk/config/photoshop/config/platform.hpp
-    It appears that originally this code was commented out. But in new code (1.51) it is uncommented:
-    ```
-    // REVISIT (sparent) : This also come from Switches.h... sometimes. Untangle
-    //#ifndef MSWindows
-    //  #define MSWindows (PHOTOSHOP_PLATFORM(MICROSOFT))
-    //#endif
-    ```
-    We cannot modify platform.hpp because it's coming from the Photoshop SDK. Instead will undef MSWindows where
-    we include platform.hpp
-*************************************************************************************************************/
-#include "photoshop/config/platform.hpp"
-#if PS_PLATFORM_APPLE
-    #ifdef MSWindows
-        #undef MSWindows
-    #endif
-#endif
-
-#if PS_PLATFORM_APPLE
+#ifdef MAC_ENV
+    #define CF_EXCLUDE_CSTD_HEADERS
     #include "CoreFoundation/CoreFoundation.h"
-    #if PS_OS_MAC
-        #include "Carbon/Carbon.h"
-    #endif
-#endif
-
-#if PS_OS_IOS
-    #include "photoshop/platform/EmulateEndianOnIOS.h"
-    #include "photoshop/platform/EmulateMacErrorsOnIOS.h"
-    #include "photoshop/platform/EmulateQuickdrawOnIOS.h"
-    #include "photoshop/platform/EmulateOSAPIsOnIOS.h"
-    #include "photoshop/platform/EmulateCarbonFilesOnIOS.h"
+    #include "Carbon/Carbon.h"
 #endif
 
 #ifdef __cplusplus
@@ -121,7 +90,7 @@ extern "C"
                                 ///<
                                 ///< A value of zero implies "not initialized",
                                 ///< and you should not attempt to use mFileReference
-#if defined(WIN_ENV) || defined(ANDROID_ENV) || WEB_ENV || defined(UNIX_ENV)
+#if defined(WIN_ENV) || WEB_ENV || defined(UNIX_ENV)
         uint16* mFileReference; ///< \brief mFileReference could be as long as 64K but MUST be NULL terminated.
 #elif defined(MAC_ENV)
     CFURLRef mFileReference; ///< \brief A CFURLRef, as defined by Mac OS X
@@ -170,7 +139,7 @@ extern "C"
         const char* extension;
     } SPPlatformFileInfo;
 
-    #elif PS_PLATFORM_APPLE
+    #else
 
     typedef struct SPPlatformFileSpecification
     { /* this handles unicode file names */
@@ -204,7 +173,7 @@ extern "C"
         /** File flags for Finder; see Mac OS documentation. */
         uint16 finderFlags;
     } SPPlatformFileInfo;
-    #endif // PS_PLATFORM_APPLE
+    #endif
 
 #endif // MAC_ENV
 

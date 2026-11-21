@@ -23,17 +23,17 @@
 #define AECACHEONLOADSUITE
 
 /**
-**	CacheOnLoadSuite, used to signal whether or not the plugin needs to load from
-**	disk every time on startup.
+**  CacheOnLoadSuite, used to signal whether or not the plugin needs to load from
+**  disk every time on startup.
 */
-#define kPFCacheOnLoadSuite			"PF Cache On Load Suite"
-#define kPFCacheOnLoadSuiteVersion1	1
+#define kPFCacheOnLoadSuite "PF Cache On Load Suite"
+#define kPFCacheOnLoadSuiteVersion1 1
 
-typedef struct PF_CacheOnLoadSuite1 {
+typedef struct PF_CacheOnLoadSuite1
+{
 
-	SPAPI PF_Err	(*PF_SetNoCacheOnLoad)(	PF_ProgPtr			effect_ref,
-											A_long				effectAvailable);
-												
+    SPAPI PF_Err (*PF_SetNoCacheOnLoad)(PF_ProgPtr effect_ref, A_long effectAvailable);
+
 } PF_CacheOnLoadSuite1;
 
 #endif // AECACHEONLOADSUITE

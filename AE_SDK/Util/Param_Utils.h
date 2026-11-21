@@ -1,32 +1,30 @@
 #ifndef H_PARAM_UTILS
 #define H_PARAM_UTILS
 
-//	do not include DVA headers here
+//  do not include DVA headers here
 #include <AE_Effect.h>
 #include <AE_EffectCB.h>
 #include <AE_Macros.h>
 
-
 // Returns DST pointer. DST must be of size SZ. SRC must be null terminated.
 // Auto null terminates and truncates if necessary.
-static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
-	#ifdef AE_OS_WIN
-		// Windows: use strncpy_s
-		::strncpy_s((DST), (SZ), (SRC), _TRUNCATE);
-	#else
-		// Mac: use strlcpy
-		::strlcpy((DST), (SRC), (SZ));
-	#endif
-	return DST;
+static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ)
+{
+#ifdef AE_OS_WIN
+    // Windows: use strncpy_s
+    ::strncpy_s((DST), (SZ), (SRC), _TRUNCATE);
+#else
+    // Mac: use strlcpy
+    ::strlcpy((DST), (SRC), (SZ));
+#endif
+    return DST;
 }
 
-#define        PF_ParamDef_IS_PUI_FLAG_SET(_defP, _puiFlag)        \
-  (((_defP)->ui_flags & _puiFlag) != 0)
-   
-#define        PF_ParamDef_IS_PARAM_FLAG_SET(_defP, _paramFlag)    \
-   (((_defP)->flags & _paramFlag) != 0)
+#define PF_ParamDef_IS_PUI_FLAG_SET(_defP, _puiFlag) (((_defP)->ui_flags & _puiFlag) != 0)
 
-#define         PF_ParamID_DFLT     0
+#define PF_ParamDef_IS_PARAM_FLAG_SET(_defP, _paramFlag) (((_defP)->flags & _paramFlag) != 0)
+
+#define PF_ParamID_DFLT 0
 
 // clang-format off
 #define PF_ADD_COLOR(NAME, RED, GREEN, BLUE, ID)\
@@ -63,8 +61,8 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 	} while (0)
 // clang-format on
 
-#define PF_ADD_ARBITRARY(NAME, WIDTH, HEIGHT, PUI_FLAGS, DFLT, ID, REFCON)\
-	PF_ADD_ARBITRARY2(NAME, WIDTH, HEIGHT, PF_ParamFlag_NONE, PUI_FLAGS, DFLT, ID, REFCON)
+#define PF_ADD_ARBITRARY(NAME, WIDTH, HEIGHT, PUI_FLAGS, DFLT, ID, REFCON)                                             \
+    PF_ADD_ARBITRARY2(NAME, WIDTH, HEIGHT, PF_ParamFlag_NONE, PUI_FLAGS, DFLT, ID, REFCON)
 
 // clang-format off
 #define PF_ADD_SLIDER(NAME, VALID_MIN, VALID_MAX, SLIDER_MIN, SLIDER_MAX, DFLT, ID) \
@@ -211,7 +209,6 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 	} while (0)
 // clang-format on
 
-
 // clang-format off
 #define PF_ADD_NULL(NAME, ID) \
 	do {\
@@ -222,7 +219,6 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 		if ((priv_err = PF_ADD_PARAM(in_data, -1, &def)) != PF_Err_NONE) return priv_err; \
 	} while (0)
 // clang-format on
-
 
 // clang-format off
 #define PF_ADD_POPUP(NAME, CHOICES, DFLT, STRING, ID) \
@@ -238,7 +234,7 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 		if ((priv_err = PF_ADD_PARAM(in_data, -1, &def)) != PF_Err_NONE) return priv_err; \
 	} while (0)
 // clang-format on
-	
+
 // clang-format off
 #define PF_ADD_LAYER(NAME, DFLT, ID) \
 	do	{\
@@ -248,14 +244,12 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 		def.u.ld.dephault = (DFLT); \
 		def.uu.id = ID;\
 		if ((priv_err = PF_ADD_PARAM(in_data, -1, &def)) != PF_Err_NONE) return priv_err; \
-	} while (0)			
+	} while (0)
 // clang-format on
 
-#define PF_ADD_255_SLIDER(NAME, DFLT, ID)\
-	PF_ADD_SLIDER( (NAME), 0, 255, 0, 255, (DFLT), (ID))
+#define PF_ADD_255_SLIDER(NAME, DFLT, ID) PF_ADD_SLIDER((NAME), 0, 255, 0, 255, (DFLT), (ID))
 
-#define PF_ADD_PERCENT(NAME, DFLT, ID)\
-	PF_ADD_FIXED( (NAME), 0, 100, 0, 100, (DFLT), 1, 1, 0, (ID))
+#define PF_ADD_PERCENT(NAME, DFLT, ID) PF_ADD_FIXED( (NAME), 0, 100, 0, 100, (DFLT), 1, 1, 0, (ID))
 
 // clang-format off
 #define PF_ADD_POINT_PRECONVERTED(NAME, X_DFLT_FIXED, Y_DFLT_FIXED, RESTRICT_BOUNDS, ID) \
@@ -288,7 +282,7 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 		PF_STRNNCPY(def.PF_DEF_NAME, (NAME), sizeof(def.PF_DEF_NAME) ); \
 		def.u.point3d_d.x_value = def.u.point3d_d.x_dephault = X_DFLT; \
 		def.u.point3d_d.y_value = def.u.point3d_d.y_dephault = Y_DFLT; \
-		def.u.point3d_d.z_value = def.u.point3d_d.z_dephault = Y_DFLT; \
+		def.u.point3d_d.z_value = def.u.point3d_d.z_dephault = Z_DFLT; \
 		def.uu.id = (ID); \
 		if ((priv_err = PF_ADD_PARAM(in_data, -1, &def)) != PF_Err_NONE) return priv_err; \
 	} while (0)
@@ -312,7 +306,7 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 		def.param_type = PF_Param_GROUP_END; \
 		def.uu.id = (ID); \
 		if ((priv_err = PF_ADD_PARAM(in_data, -1, &def)) != PF_Err_NONE) return priv_err; \
-	} while (0)	
+	} while (0)
 // clang-format on
 
 // clang-format off
@@ -360,45 +354,58 @@ static inline char* PF_STRNNCPY(char* DST, const char* SRC, size_t SZ) {
 // clang-format on
 
 #ifdef __cplusplus
-namespace fxparam_utility {
-
-	template <typename T>
-	inline int RoundF(T	x)
-	{
-		int	ret;
-
-		if (x > 0) {
-			ret = (int)(x + (T)0.5);
-		} else {
-			if ((int)(x + (T)0.5) == (x + (T)0.5)) {
-				ret = (int)x;
-			} else {
-				ret = (int)(x - (T)0.5);
-			}
-		}
-
-		return ret;
-	}
-};
-
-inline PF_Err PF_AddPointControl(PF_InData *in_data,
-								 const char *nameZ,
-								 float x_defaultF,			// 0-1
-								 float y_defaultF,		// 0-1
-								 bool restrict_boundsB,
-								 PF_ParamFlags param_flags,
-								 PF_ParamUIFlags pui_flags,
-								 A_long param_id)
+namespace fxparam_utility
 {
-    PF_ParamDef		def = {{0}};
-	namespace du = fxparam_utility;
 
-	def.flags = param_flags;
-	def.ui_flags = pui_flags;
+template <typename T>
+inline int RoundF(T x)
+{
+    int ret;
 
-	PF_ADD_POINT(nameZ, du::RoundF(x_defaultF*100), du::RoundF(y_defaultF*100), restrict_boundsB, param_id);	// has error return in macro
+    if (x > 0)
+    {
+        ret = (int)(x + (T)0.5);
+    }
+    else
+    {
+        if ((int)(x + (T)0.5) == (x + (T)0.5))
+        {
+            ret = (int)x;
+        }
+        else
+        {
+            ret = (int)(x - (T)0.5);
+        }
+    }
 
-	return PF_Err_NONE;
+    return ret;
+}
+}; // namespace fxparam_utility
+
+inline PF_Err PF_AddPointControl(
+    PF_InData* in_data,
+    const char* nameZ,
+    float x_defaultF, // 0-1
+    float y_defaultF, // 0-1
+    bool restrict_boundsB,
+    PF_ParamFlags param_flags,
+    PF_ParamUIFlags pui_flags,
+    A_long param_id)
+{
+    PF_ParamDef def = {{0}};
+    namespace du = fxparam_utility;
+
+    def.flags = param_flags;
+    def.ui_flags = pui_flags;
+
+    PF_ADD_POINT(
+        nameZ,
+        du::RoundF(x_defaultF * 100),
+        du::RoundF(y_defaultF * 100),
+        restrict_boundsB,
+        param_id); // has error return in macro
+
+    return PF_Err_NONE;
 }
 #endif // __cplusplus
 
