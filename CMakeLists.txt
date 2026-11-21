@@ -54,6 +54,7 @@ if(WIN32)
 
     if(MSVC)
         target_compile_options(${PROJECT_NAME} PRIVATE
+            /utf-8                      # 源文件按 UTF-8 解析
             /EHa                        # 启用 SEH
             /O2                         # 优化速度
             /GF                         # 启用只读字符串池化

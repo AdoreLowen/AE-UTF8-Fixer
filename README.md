@@ -3,15 +3,16 @@
 [![Build and Release AE Plugin](https://github.com/AdoreLowen/AE-UTF8-Fixer/actions/workflows/build.yml/badge.svg)](https://github.com/AdoreLowen/AE-UTF8-Fixer/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**AE UTF-8 Fixer** 是一个用于解决 Windows 端 Adobe After Effects 26.2 及以上版本中部分第三方插件在中文系统环境下出现参数名、下拉菜单等乱码或不显示的辅助插件。
+**AE UTF-8 Fixer** 是一个用于解决 Windows 端 Adobe After Effects 中部分第三方插件在中文 / 日文 / 韩文等 CJK 系统环境下出现参数名、下拉菜单等乱码或不显示的辅助插件（主要针对 AE 26.2 及以上版本）。
 
 ---
 
 ## 一、使用方法
 
 1. 前往 [Releases](https://github.com/AdoreLowen/AE-UTF8-Fixer/releases) 页面下载编译好的 `!00_UTF8_Fixer.aex`。
-2. 将该文件放入 Adobe After Effects 的插件目录中（不要重命名文件），通常路径为：
-  `C:\Program Files\Adobe\Adobe After Effects 2026\Support Files\Plug-ins`
+2. 将该文件放入 Adobe After Effects 的插件目录中（不要重命名文件），路径形如：
+  `C:\Program Files\Adobe\Adobe After Effects <版本>\Support Files\Plug-ins`
+  例如 `...\Adobe After Effects 2026\Support Files\Plug-ins`。
 3. 重新启动 After Effects 即可生效。
 
 ---
@@ -20,9 +21,12 @@
 
 本插件通过以下机制实现乱码修复：
 
-- 利用 [MinHook](https://github.com/TsudaKageyu/minhook) 库拦截 AE 宿主的参数添加函数 `add_param`。
-- 在参数传入 AE UI 绘制前，自动检测字符串编码。
-- 如果检测到非 UTF-8 的本地编码（如 GBK），则动态将其转换为标准的 UTF-8 编码，从而避免乱码。
+- 启动时自动检测 AE 版本与系统 CJK 代码页（936/950/932/949），决定修复方向。
+- 利用 [MinHook](https://github.com/TsudaKageyu/minhook) 库 hook AE 宿主的 `add_param`、`PF_UpdateParamUI`，并 hook 各插件入口点与 `LoadLibrary`，以覆盖后续加载的插件。
+- 在字符串传入 AE UI 绘制前自动检测编码，并按版本在「本地编码 ↔ UTF-8」两个方向间转换：
+  - AE 26.2 ~ 26.x：本地编码（如 GBK）→ UTF-8；
+  - AE 27.0+ 及更早版本：UTF-8 → 本地编码。
+- 对已声明 `PF_OutFlag2_STRINGS_ARE_UTF8` 的插件自动跳过，避免误转换。
 
 ---
 
